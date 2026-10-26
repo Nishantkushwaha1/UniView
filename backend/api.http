@@ -1,0 +1,50 @@
+### Works with the VS Code "REST Client" extension. Run "Send Request" above each block.
+@base = http://localhost:5000/api
+@guest = 11111111-2222-3333-4444-555555555555
+
+### Health
+GET {{base}}/health
+
+### Create a text file as a guest
+POST {{base}}/docs
+x-guest-id: {{guest}}
+Content-Type: application/json
+
+{ "name": "hello.txt", "content": "Hello from the API" }
+
+### List files
+GET {{base}}/docs?sort=name&limit=10
+x-guest-id: {{guest}}
+
+### Dashboard numbers
+GET {{base}}/stats
+x-guest-id: {{guest}}
+
+### Register (keeps the guest's files)
+# @name register
+POST {{base}}/auth/register
+Content-Type: application/json
+
+{ "name": "Test User", "email": "test@example.com", "password": "secret123", "guestId": "{{guest}}" }
+
+### Login (demo user from `npm run seed`)
+# @name login
+POST {{base}}/auth/login
+Content-Type: application/json
+
+{ "email": "demo@uniview.app", "password": "Demo@1234" }
+
+###
+@token = {{login.response.body.token}}
+
+### Who am I
+GET {{base}}/auth/me
+Authorization: Bearer {{token}}
+
+### Folders
+GET {{base}}/folders
+Authorization: Bearer {{token}}
+
+### Search
+GET {{base}}/search?q=plan
+Authorization: Bearer {{token}}

@@ -1,0 +1,80 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { @apply antialiased; -webkit-tap-highlight-color: transparent; -webkit-text-size-adjust: 100%; }
+  body { overflow-x: hidden; @apply bg-slate-50 font-sans text-slate-800 dark:bg-slate-950 dark:text-slate-200; }
+  ::selection { @apply bg-brand-200 text-brand-950 dark:bg-brand-800 dark:text-white; }
+  * { scrollbar-width: thin; scrollbar-color: theme(colors.slate.300) transparent; }
+  .dark * { scrollbar-color: theme(colors.slate.700) transparent; }
+  *::-webkit-scrollbar { width: 10px; height: 10px; }
+  *::-webkit-scrollbar-thumb { @apply rounded-full border-2 border-transparent bg-slate-300 bg-clip-content dark:bg-slate-700; }
+  button { @apply cursor-pointer; }
+  button:disabled { @apply cursor-not-allowed; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg px-3.5 py-2 text-sm font-medium transition
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white
+      disabled:pointer-events-none disabled:opacity-50 dark:focus-visible:ring-offset-slate-950;
+  }
+  .btn-primary { @apply bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-800; }
+  .btn-ghost { @apply border border-slate-200 bg-white text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800; }
+  .btn-subtle { @apply text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800; }
+  .btn-danger { @apply bg-red-600 text-white shadow-sm hover:bg-red-700; }
+  .btn-sm { @apply px-2.5 py-1.5 text-xs; }
+  .btn-icon { @apply inline-flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand-500 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-100; }
+
+  .inp {
+    @apply w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-base text-slate-800 sm:text-sm shadow-sm outline-none transition placeholder:text-slate-400
+      focus:border-brand-500 focus:ring-2 focus:ring-brand-500/20
+      dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500;
+  }
+  .card { @apply rounded-xl border border-slate-200/80 bg-white shadow-soft dark:border-slate-800 dark:bg-slate-900; }
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1.5 text-xs font-medium text-slate-600 transition
+      hover:border-brand-300 hover:text-brand-700 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-brand-700 dark:hover:text-brand-300;
+  }
+  .chip-active { @apply border-brand-600 bg-brand-600 text-white hover:border-brand-600 hover:text-white dark:border-brand-500 dark:bg-brand-600 dark:text-white; }
+  .label { @apply mb-1.5 block text-xs font-medium text-slate-600 dark:text-slate-400; }
+  .kbd { @apply rounded border border-slate-300 bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400; }
+  .skeleton { @apply relative overflow-hidden rounded-lg bg-slate-200/70 dark:bg-slate-800; }
+  .skeleton::after { content: ''; @apply absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/50 to-transparent dark:via-white/5; animation: shimmer 1.4s infinite; }
+  .checker { background-color: #f8fafc; background-image: linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%), linear-gradient(45deg, #e2e8f0 25%, transparent 25%, transparent 75%, #e2e8f0 75%); background-size: 16px 16px; background-position: 0 0, 8px 8px; }
+  .dark .checker { background-color: #0f172a; background-image: linear-gradient(45deg, #1e293b 25%, transparent 25%, transparent 75%, #1e293b 75%), linear-gradient(45deg, #1e293b 25%, transparent 25%, transparent 75%, #1e293b 75%); }
+}
+
+/* Styling for rendered Word / Excel content */
+.prose-doc { @apply text-slate-800 dark:text-slate-200; line-height: 1.65; }
+.prose-doc h1 { @apply mb-3 mt-6 text-2xl font-bold; }
+.prose-doc h2 { @apply mb-2 mt-5 text-xl font-semibold; }
+.prose-doc h3 { @apply mb-2 mt-4 text-lg font-semibold; }
+.prose-doc p { @apply my-2; }
+.prose-doc ul { @apply my-2 list-disc pl-6; }
+.prose-doc ol { @apply my-2 list-decimal pl-6; }
+.prose-doc a { @apply text-brand-600 underline dark:text-brand-400; }
+.prose-doc img { @apply my-3 h-auto max-w-full rounded-md; }
+.prose-doc table { @apply my-3 border-collapse text-sm; }
+.prose-doc td, .prose-doc th { @apply border border-slate-300 px-2.5 py-1.5 align-top dark:border-slate-700; }
+.prose-doc th { @apply bg-slate-100 font-semibold dark:bg-slate-800; }
+.sheet table { @apply w-max min-w-full border-collapse text-sm; }
+.sheet td { @apply whitespace-pre border border-slate-200 px-2.5 py-1.5 dark:border-slate-800; }
+.sheet tr:first-child td { @apply sticky top-0 bg-slate-100 font-semibold dark:bg-slate-800; }
+.sheet tr:nth-child(even) td { @apply bg-slate-50/60 dark:bg-slate-900/60; }
+.sheet tr:first-child td { @apply bg-slate-100 dark:bg-slate-800; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* Excel preview: looks like a spreadsheet grid */
+.xl-wrap { background: #fff; color: #000; }
+.xl { border-collapse: separate; border-spacing: 0; table-layout: fixed; font-family: Calibri, "Segoe UI", sans-serif; font-size: 14px; }
+.xl td { padding: 1px 4px; border-right: 1px solid #e2e2e2; border-bottom: 1px solid #e2e2e2; overflow: hidden; text-overflow: clip; background: #fff; height: 20px; }
+.xl th { position: sticky; top: 0; z-index: 2; background: #f3f3f3; color: #555; font-weight: 500; font-size: 12px; border-right: 1px solid #d4d4d4; border-bottom: 1px solid #d4d4d4; padding: 2px 4px; text-align: center; }
+.xl tbody th { position: sticky; left: 0; top: auto; z-index: 1; }
+.xl thead th.corner { left: 0; z-index: 3; }
+.pptx-host .pptx-preview-wrapper { background: transparent !important; max-width: 100%; height: auto !important; overflow: visible !important; }
+.pptx-host .pptx-preview-slide-wrapper { margin: 0 auto 12px !important; box-shadow: 0 2px 10px rgba(15,23,42,.25); }

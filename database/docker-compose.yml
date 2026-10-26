@@ -1,0 +1,36 @@
+# MongoDB for UniView.   Start:  docker compose -f database/docker-compose.yml up -d
+# Optional web UI (http://localhost:8081):  docker compose -f database/docker-compose.yml --profile tools up -d
+name: uniview
+
+services:
+  mongo:
+    image: mongo:7
+    container_name: uniview-mongo
+    restart: unless-stopped
+    ports:
+      - "${MONGO_PORT:-27017}:27017"
+    volumes:
+      - uniview_mongo_data:/data/db
+      - ./init:/docker-entrypoint-initdb.d:ro   # runs once, the first time the volume is created
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+
+  mongo-express:
+    image: mongo-express:1
+    container_name: uniview-mongo-ui
+    restart: unless-stopped
+    profiles: ["tools"]
+    depends_on:
+      mongo:
+        condition: service_healthy
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo:27017/
+      ME_CONFIG_BASICAUTH: "false"
+
+volumes:
+  uniview_mongo_data:
